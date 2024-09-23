@@ -1,0 +1,30 @@
+server:
+  port: {SERVER_PORT:8080}
+spring:
+  datasource:
+    url: ${TG_SCHEDULE_BOT_DB_JDBC_URL:jdbc:postgresql://localhost:5432/tg-scheduler?currentSchema=public&user=postgres&password=admin}
+    driver-class-name: org.postgresql.Driver
+  jpa:
+    properties:
+      hibernate:
+        jdbc:
+          lob.non_contextual_creation: true
+          batch_size: 30
+        order_inserts: true
+        order_updates: true
+    open-in-view: false
+  liquibase:
+    enabled: ${TG_SCHEDULE_BOT_LIQUIBASE_ENABLED:false}
+    change-log: classpath:db/changelog/master.xml
+telegram:
+  bot:
+    name: ${TELEGRAM_BOT_NAME:name}
+    token: ${TELEGRAM_BOT_TOKEN:token}
+commands:
+  info:
+    message: ${TG_SCHEDULE_BOT_INFO_COMMAND_MESSAGE:Описание}
+  status:
+    message: ${TG_SCHEDULE_BOT_STATUS_COMMAND_MESSAGE:Статус}
+  poll:
+    is-anonymous: ${TG_SCHEDULE_BOT_POLL_IS_ANONYMOUS:false}
+    title: ${TG_SCHEDULE_BOT_POLL_TITLE:Кто будет сегодня играть?}

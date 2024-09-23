@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.6.xsd">
+
+    <changeSet id="12-09-2024-01" author="p.vydysh">
+        <preConditions onFail="WARN">
+            <tableExists tableName="poll"/>
+        </preConditions>
+
+        <sql>
+            ALTER TABLE poll
+            ADD chat_id TEXT NOT NULL
+        </sql>
+    </changeSet>
+
+</databaseChangeLog>
