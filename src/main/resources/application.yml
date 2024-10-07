@@ -16,15 +16,11 @@ spring:
   liquibase:
     enabled: ${TG_SCHEDULE_BOT_LIQUIBASE_ENABLED:false}
     change-log: classpath:db/changelog/master.xml
-telegram:
-  bot:
+telegram-bot:
+  config:
     name: ${TELEGRAM_BOT_NAME:name}
     token: ${TELEGRAM_BOT_TOKEN:token}
 commands:
-  info:
-    message: ${TG_SCHEDULE_BOT_INFO_COMMAND_MESSAGE:Описание}
-  status:
-    message: ${TG_SCHEDULE_BOT_STATUS_COMMAND_MESSAGE:Статус}
   poll:
     is-anonymous: ${TG_SCHEDULE_BOT_POLL_IS_ANONYMOUS:false}
     title: ${TG_SCHEDULE_BOT_POLL_TITLE:Кто будет сегодня играть?}

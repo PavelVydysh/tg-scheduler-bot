@@ -6,7 +6,9 @@ import lombok.Setter;
 @Getter
 @Setter
 public class BotProperties {
+
     private String name;
 
     private String token;
+
 }

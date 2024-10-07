@@ -11,8 +11,7 @@ import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 @Component
 public class InfoCommand extends Command{
 
-    @Value(Environment.COMMAND_INFO_MESSAGE_KEY)
-    private String message;
+    private String message = "Инфо";
 
     public InfoCommand(ScheduleBot bot) {
         super(bot);

@@ -11,8 +11,7 @@ import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 @Component
 public class StatusCommand extends Command {
 
-    @Value(Environment.COMMAND_STATUS_MESSAGE_KEY)
-    private String message;
+    private String message = "Статус";
 
     public StatusCommand(ScheduleBot bot) {
         super(bot);

@@ -1,0 +1,145 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                   https://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-latest.xsd">
+
+    <changeSet id="2024_10_06-01" author="p.vydysh">
+        <preConditions onFail="MARK_RAN">
+            <not>
+                <tableExists tableName="poll"/>
+            </not>
+        </preConditions>
+        <createTable tableName="poll">
+            <column name="poll_id"
+                    type="UUID"
+                    remarks="Идентификатор шаблона опроса">
+                <constraints primaryKey="true"/>
+            </column>
+
+            <column name="title"
+                    type="TEXT"
+                    remarks="Заголовок опроса">
+                <constraints nullable="false"/>
+            </column>
+
+            <column name="tg_chat_id"
+                    type="INTEGER"
+                    remarks="Идентификатор телеграм чата">
+                <constraints nullable="false"/>
+            </column>
+
+            <column name="creation_date"
+                    type="TIMESTAMPTZ"
+                    remarks="Дата создания шаблона опроса">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+
+    <changeSet id="2024_10_06-02" author="p.vydysh">
+        <preConditions onFail="MARK_RAN">
+            <not>
+                <tableExists tableName="poll_version"/>
+            </not>
+        </preConditions>
+
+        <createTable tableName="poll_version">
+            <column name="poll_version_id"
+                    type="UUID"
+                    remarks="Идентификатор версии шаблона опроса">
+                <constraints primaryKey="true"/>
+            </column>
+
+            <column name="poll_id"
+                    type="UUID"
+                    remarks="Идентификатор шаблона опроса">
+                <constraints nullable="false"/>
+            </column>
+
+            <column name="version"
+                    type="INTEGER"
+                    remarks="Номер версии шаблона опроса">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+
+        <addForeignKeyConstraint constraintName="fk_poll_version_to_poll_id"
+                                 baseTableName="poll_version"
+                                 baseColumnNames="poll_id"
+                                 referencedTableName="poll"
+                                 referencedColumnNames="poll_id"
+                                 onDelete="CASCADE" onUpdate="CASCADE"/>
+    </changeSet>
+
+    <changeSet id="2024_10_06-03" author="p.vydysh">
+        <preConditions onFail="MARK_RAN">
+            <not>
+                <tableExists tableName="available_answer"/>
+            </not>
+        </preConditions>
+
+        <createTable tableName="available_answer">
+            <column name="available_answer_id"
+                    type="UUID"
+                    remarks="Идентификатор доступного варианта ответа">
+                <constraints primaryKey="true"/>
+            </column>
+
+            <column name="title"
+                    type="TEXT"
+                    remarks="Заголовок доступного варианта ответа">
+                <constraints nullable="false"/>
+            </column>
+
+            <column name="position"
+                    type="INTEGER"
+                    remarks="Позиция варианта ответа в опросе">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+    
+    <changeSet id="2024_10_06-04" author="p.vydysh">
+        <preConditions onFail="MARK_RAN">
+            <not>
+                <tableExists tableName="pol_version_and_available_answer"/>
+            </not>
+        </preConditions>
+
+        <createTable tableName="poll_version_and_available_answer">
+            <column name="poll_version_and_available_answer_id"
+                    type="UUID"
+                    remarks="Идентификатор соотношения доступного варианта ответа к шаблону опроса">
+                <constraints primaryKey="true"/>
+            </column>
+
+            <column name="poll_version_id"
+                    type="UUID"
+                    remarks="Идентификатор версии шаблона опроса">
+                <constraints nullable="false"/>
+            </column>
+
+            <column name="available_answer_id"
+                    type="UUID"
+                    remarks="Идентификатор доступного варианта ответа">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+
+        <addForeignKeyConstraint constraintName="fk_pol_version_and_available_answer_to_poll_version"
+                                 baseTableName="poll_version_and_available_answer"
+                                 baseColumnNames="poll_version_id"
+                                 referencedTableName="poll_version"
+                                 referencedColumnNames="poll_version_id"
+                                 onDelete="CASCADE" onUpdate="CASCADE"/>
+
+        <addForeignKeyConstraint constraintName="fk_pol_version_and_available_answer_to_available_answer"
+                                 baseTableName="poll_version_and_available_answer"
+                                 baseColumnNames="available_answer_id"
+                                 referencedTableName="available_answer"
+                                 referencedColumnNames="available_answer_id"
+                                 onDelete="CASCADE" onUpdate="CASCADE"/>
+    </changeSet>
+    
+</databaseChangeLog>

@@ -8,7 +8,7 @@ import org.springframework.context.annotation.Configuration;
 public class BotPropertiesConfiguration {
 
     @Bean
-    @ConfigurationProperties(prefix = Environment.BOT_PROPERTIES_PREFIX)
+    @ConfigurationProperties(prefix = Environment.BOT_CONFIGURATION_PREFIX)
     public BotProperties botProperties() {
         return new BotProperties();
     }
