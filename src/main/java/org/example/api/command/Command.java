@@ -11,6 +11,6 @@ public abstract class Command {
 
     protected final ScheduleBot bot;
 
-    abstract void handle(Update update) throws TelegramApiException;
+    abstract void handle(Update update, String calledPattern) throws TelegramApiException;
 
 }

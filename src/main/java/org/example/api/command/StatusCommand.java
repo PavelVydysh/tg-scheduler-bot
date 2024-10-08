@@ -11,18 +11,18 @@ import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 @Component
 public class StatusCommand extends Command {
 
-    private String message = "Статус";
+    private final static String MESSAGE = "Статус";
 
     public StatusCommand(ScheduleBot bot) {
         super(bot);
     }
 
     @Override
-    void handle(Update update) throws TelegramApiException {
+    void handle(Update update, String calledPattern) throws TelegramApiException {
         SendMessage messageToSend = SendMessage
                 .builder()
                 .chatId(update.getMessage().getChatId())
-                .text(message)
+                .text(MESSAGE)
                 .build();
 
         bot.getTelegramClient().execute(messageToSend);
