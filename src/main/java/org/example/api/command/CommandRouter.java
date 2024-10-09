@@ -1,6 +1,5 @@
 package org.example.api.command;
 
-import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.example.domain.model.State;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -30,16 +29,29 @@ public class CommandRouter {
     }
 
     public void handle(Update update) {
+        if(update.hasMessage()) {
+            Optional<State> optionalState = userStateManager.manage(update.getMessage());
+
+
+        }
+        State currentState = null;
         //проверка на наличие состояния
         Optional<State> optionalState = userStateManager.manage(update.getMessage());
+        currentState = optionalState.orElse(
+                new State(update.getMessage().getFrom().getId(),
+                        update.getMessage().getChatId(),
+                        command,
+                        null)
+        );
+
         if(optionalState.isPresent()) {
-            log.info("статус");
+            log.info("статус:{}", optionalState.get());
         } else {
             log.info("нет статуса");
         }
 
         String commandFromUpdate = update.getMessage().getText();
-        if (!update.getMessage().getText().startsWith(commandPrefix)) {
+        if (!commandFromUpdate.startsWith(commandPrefix) && optionalState.isPresent()) {
             return;
         }
 
@@ -47,7 +59,7 @@ public class CommandRouter {
         Command handler = commands.get(command);
         if (!ObjectUtils.isEmpty(handler)) {
             try {
-                handler.handle(update, command);
+                handler.handle(update, currentState);
             } catch (TelegramApiException e) {
                 throw new RuntimeException();
             }

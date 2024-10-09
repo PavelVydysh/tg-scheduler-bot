@@ -3,6 +3,7 @@ package org.example.api.command;
 import lombok.AllArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import org.example.api.ScheduleBot;
+import org.example.domain.model.State;
 import org.telegram.telegrambots.meta.api.objects.Update;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 
@@ -11,6 +12,6 @@ public abstract class Command {
 
     protected final ScheduleBot bot;
 
-    abstract void handle(Update update, String calledPattern) throws TelegramApiException;
+    abstract void handle(Update update, State currentState) throws TelegramApiException;
 
 }

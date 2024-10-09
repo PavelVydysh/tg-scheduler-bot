@@ -1,6 +1,7 @@
 package org.example.api.command;
 
 import org.example.api.ScheduleBot;
+import org.example.domain.model.State;
 import org.example.infrastructure.configuration.Environment;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
@@ -18,7 +19,7 @@ public class StatusCommand extends Command {
     }
 
     @Override
-    void handle(Update update, String calledPattern) throws TelegramApiException {
+    void handle(Update update, State currentState) throws TelegramApiException {
         SendMessage messageToSend = SendMessage
                 .builder()
                 .chatId(update.getMessage().getChatId())
