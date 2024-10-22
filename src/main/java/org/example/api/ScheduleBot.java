@@ -11,8 +11,12 @@ import org.telegram.telegrambots.client.okhttp.OkHttpTelegramClient;
 import org.telegram.telegrambots.longpolling.interfaces.LongPollingUpdateConsumer;
 import org.telegram.telegrambots.longpolling.starter.SpringLongPollingBot;
 import org.telegram.telegrambots.longpolling.util.LongPollingSingleThreadUpdateConsumer;
+import org.telegram.telegrambots.meta.api.methods.botapimethods.BotApiMethod;
 import org.telegram.telegrambots.meta.api.objects.Update;
+import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 import org.telegram.telegrambots.meta.generics.TelegramClient;
+
+import java.io.Serializable;
 
 @Slf4j
 @Component
@@ -43,9 +47,16 @@ public class ScheduleBot implements SpringLongPollingBot, LongPollingSingleThrea
 
     @Override
     public void consume(Update update) {
-        if(update.hasMessage()) {
-            log.info(update.getMessage().getText());
-            commandRouter.handle(update);
+        commandRouter.handle(update);
+    }
+
+    public <T extends Serializable, Method extends BotApiMethod<T>> T execute(Method method) {
+        try {
+            return telegramClient.execute(method);
+        } catch (TelegramApiException ex) {
+            ex.printStackTrace();
+            throw new RuntimeException();
         }
     }
+
 }

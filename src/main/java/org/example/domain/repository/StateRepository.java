@@ -10,4 +10,6 @@ public interface StateRepository {
 
     void createState(State state);
 
+    void updateState(Long userId, Long chatId, State state);
+
 }

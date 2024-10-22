@@ -15,8 +15,8 @@ public class UserStateManager {
 
     private final StateService stateService;
 
-    public Optional<State> manage(Message message) {
-        return stateService.findStateByUserIdAnsChatId(message.getFrom().getId(), message.getChatId());
+    public Optional<State> manage(Long userId, Long chatId) {
+        return stateService.findStateByUserIdAnsChatId(userId, chatId);
     }
 
 }

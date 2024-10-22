@@ -18,14 +18,14 @@ public class StatusCommand extends Command {
     }
 
     @Override
-    void handle(Update update, String calledPattern) throws TelegramApiException {
+    void handle(Update update, String calledPattern, String currentState) {
         SendMessage messageToSend = SendMessage
                 .builder()
                 .chatId(update.getMessage().getChatId())
                 .text(MESSAGE)
                 .build();
 
-        bot.getTelegramClient().execute(messageToSend);
+        bot.execute(messageToSend);
     }
 
 }

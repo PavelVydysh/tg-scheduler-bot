@@ -5,6 +5,7 @@ import org.example.domain.repository.StateRepository;
 import org.example.infrastructure.configuration.converter.StateEntityConverter;
 import org.example.infrastructure.configuration.entity.StateEntity;
 import org.springframework.stereotype.Repository;
+import org.springframework.util.ObjectUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -33,4 +34,25 @@ public class StateInMemoryRepository implements StateRepository {
         StateEntity stateEntity = StateEntityConverter.toStateEntity(state);
         stateEntities.add(stateEntity);
     }
+
+    @Override
+    public void updateState(Long userId, Long chatId, State state) {
+        removeState(userId, chatId);
+        createState(state);
+    }
+
+    public void removeState(Long userId, Long chatId) {
+        StateEntity currentStateEntity = null;
+        for(StateEntity stateEntity : stateEntities) {
+            if(stateEntity.getUserId().equals(userId) && stateEntity.getChatId().equals(chatId)) {
+                currentStateEntity = stateEntity;
+                break;
+            }
+        }
+
+        if(!ObjectUtils.isEmpty(currentStateEntity)) {
+            stateEntities.remove(currentStateEntity);
+        }
+    }
+
 }
