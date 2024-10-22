@@ -1,7 +1,7 @@
-package org.example.infrastructure.configuration.converter;
+package org.example.infrastructure.converter;
 
 import org.example.domain.model.State;
-import org.example.infrastructure.configuration.entity.StateEntity;
+import org.example.infrastructure.entity.StateEntity;
 
 public class StateEntityConverter {
 

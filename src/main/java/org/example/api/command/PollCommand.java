@@ -3,7 +3,10 @@ package org.example.api.command;
 import lombok.extern.slf4j.Slf4j;
 import org.example.api.ScheduleBot;
 import org.example.api.converter.StateConverter;
+import org.example.api.converter.poll.PollConverter;
 import org.example.domain.model.State;
+import org.example.domain.model.poll.Poll;
+import org.example.domain.service.PollService;
 import org.example.domain.service.StateService;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.stereotype.Component;
@@ -35,10 +38,14 @@ public class PollCommand extends Command {
 
     private final StateService stateService;
 
+    private final PollService pollService;
+
     public PollCommand(ScheduleBot bot,
-                       StateService stateService) {
+                       StateService stateService,
+                       PollService pollService) {
         super(bot);
         this.stateService = stateService;
+        this.pollService = pollService;
     }
 
     @Override
@@ -119,6 +126,10 @@ public class PollCommand extends Command {
         }
 
         Message message = update.getMessage();
+
+        Poll poll = PollConverter.toPollWithoutAvailableAnswers(update.getMessage());
+        pollService.savePoll(poll);
+
         State actualState = StateConverter.toState(message.getFrom().getId(),
                 message.getChatId(),
                 calledPattern,

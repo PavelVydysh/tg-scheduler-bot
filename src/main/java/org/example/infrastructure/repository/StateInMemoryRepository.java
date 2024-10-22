@@ -1,9 +1,9 @@
-package org.example.infrastructure.configuration.repository;
+package org.example.infrastructure.repository;
 
 import org.example.domain.model.State;
 import org.example.domain.repository.StateRepository;
-import org.example.infrastructure.configuration.converter.StateEntityConverter;
-import org.example.infrastructure.configuration.entity.StateEntity;
+import org.example.infrastructure.converter.StateEntityConverter;
+import org.example.infrastructure.entity.StateEntity;
 import org.springframework.stereotype.Repository;
 import org.springframework.util.ObjectUtils;
 

@@ -1,4 +1,4 @@
-package org.example.infrastructure.configuration.entity;
+package org.example.infrastructure.entity;
 
 import lombok.Getter;
 import lombok.Setter;
