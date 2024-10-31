@@ -21,8 +21,11 @@ public class StateService {
         return stateRepository.findState(userId, chatId);
     }
 
-    public void updateState(Long userId, Long chatId, State state) {
-        stateRepository.updateState(userId,chatId, state);
+    public void updateState(State state) {
+        stateRepository.updateState(state);
     }
 
+    public void removeState(Long userId, Long chatId) {
+        stateRepository.removeState(userId, chatId);
+    }
 }

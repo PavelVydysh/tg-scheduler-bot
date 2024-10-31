@@ -135,7 +135,7 @@ public class PollCommand extends Command {
                 calledPattern,
                 PollState.CHOOSING_ACTION.name());
 
-        stateService.updateState(message.getFrom().getId(), message.getChatId(), actualState);
+        stateService.updateState(actualState);
 
         SendMessage messageToSend = SendMessage
                 .builder()
@@ -162,7 +162,7 @@ public class PollCommand extends Command {
                 State state = StateConverter.toState(userId, chatId, calledPattern,
                         PollState.INPUT_AVAILABLE_ANSWER.name());
 
-                stateService.updateState(userId, chatId, state);
+                stateService.updateState(state);
 
                 SendMessage messageToSend = SendMessage
                         .builder()
@@ -172,17 +172,7 @@ public class PollCommand extends Command {
                 bot.execute(messageToSend);
             }
             case COMPLETE_BUTTON_CALLBACK_DATA -> {
-                State state = StateConverter.toState(userId, chatId, calledPattern,
-                        PollState.ACCEPT.name());
-
-                stateService.updateState(userId, chatId, state);
-
-                SendMessage messageToSend = SendMessage
-                        .builder()
-                        .chatId(callbackQuery.getMessage().getChatId())
-                        .text(COMPLETE_MESSAGE)
-                        .build();
-                bot.execute(messageToSend);
+                stateService.removeState(userId, chatId);
             }
         }
     }
@@ -198,7 +188,7 @@ public class PollCommand extends Command {
 
         State state = StateConverter.toState(message.getFrom().getId(), message.getChatId(), calledPattern,
                 PollState.CHOOSING_ACTION.name());
-        stateService.updateState(message.getFrom().getId(), message.getChatId(), state);
+        stateService.updateState(state);
 
         String availableAnswer = message.getText();
         SendMessage availableAnswerSavedMessage = SendMessage.builder()
@@ -214,8 +204,7 @@ public class PollCommand extends Command {
     private enum PollState {
         INPUT_TITLE,
         CHOOSING_ACTION,
-        INPUT_AVAILABLE_ANSWER,
-        ACCEPT
+        INPUT_AVAILABLE_ANSWER
     }
 
 }
