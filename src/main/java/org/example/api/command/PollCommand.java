@@ -172,6 +172,13 @@ public class PollCommand extends Command {
                 bot.execute(messageToSend);
             }
             case COMPLETE_BUTTON_CALLBACK_DATA -> {
+                SendMessage messageToSend = SendMessage
+                        .builder()
+                        .chatId(callbackQuery.getMessage().getChatId())
+                        .text(COMPLETE_MESSAGE)
+                        .build();
+                bot.execute(messageToSend);
+
                 stateService.removeState(userId, chatId);
             }
         }

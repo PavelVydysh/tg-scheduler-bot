@@ -6,8 +6,8 @@ import org.springframework.stereotype.Repository;
 
 import java.util.UUID;
 
-@Repository("longTermRepository")
-public class PollJpaRepository implements PollRepository {
+@Repository("shortTermRepository")
+public class PollRedisRepository implements PollRepository {
     @Override
     public void save(Poll poll) {
 
