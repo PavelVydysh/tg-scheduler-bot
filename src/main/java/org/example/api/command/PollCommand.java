@@ -5,6 +5,7 @@ import org.example.api.ScheduleBot;
 import org.example.api.converter.StateConverter;
 import org.example.api.converter.poll.PollConverter;
 import org.example.domain.model.State;
+import org.example.domain.model.enums.PollState;
 import org.example.domain.model.poll.Poll;
 import org.example.domain.service.PollService;
 import org.example.domain.service.StateService;
@@ -23,7 +24,7 @@ import java.util.List;
 
 @Component
 @Slf4j
-public class PollCommand extends Command {
+public class PollCommand extends CommandWithState {
 
     private final static String INPUT_POLL_TITLE_MESSAGE = "Укажите название опроса:";
     private final static String POLL_TITLE_SAVE_MESSAGE = "Заголовок \"%s\" сохранен";
@@ -49,23 +50,35 @@ public class PollCommand extends Command {
     }
 
     @Override
-    void handle(Update update, String calledPattern, String currentState) {
-        log.info("State is {}", currentState);
+    public void handle(Update update, String calledPattern) {
+        Message message = update.getMessage();
+        State state = StateConverter.toState(message.getFrom().getId(),
+                message.getChatId(),
+                calledPattern,
+                PollState.INPUT_TITLE.name());
 
-        if(!StringUtils.hasText(currentState)) {
-            executeEmptyState(update, calledPattern);
-        } else {
-            PollState state = PollState.valueOf(currentState);
-            switch (state) {
-                case INPUT_TITLE -> {
-                    executeInputTitleState(update, calledPattern);
-                }
-                case CHOOSING_ACTION -> {
-                    executeChoosingActionState(update, calledPattern);
-                }
-                case INPUT_AVAILABLE_ANSWER -> {
-                    executeInputAvailableAnswerState(update, calledPattern);
-                }
+        stateService.createState(state);
+
+        SendMessage messageToSend = SendMessage
+                .builder()
+                .chatId(update.getMessage().getChatId())
+                .text(INPUT_POLL_TITLE_MESSAGE)
+                .build();
+        bot.execute(messageToSend);
+    }
+
+    @Override
+    public void handleWithState(Update update, State state) {
+        PollState pollState = PollState.valueOf(state.getStateValue());
+        switch (pollState) {
+            case INPUT_TITLE -> {
+                executeInputTitleState(update, state);
+            }
+            case CHOOSING_ACTION -> {
+                executeChoosingActionState(update, state);
+            }
+            case INPUT_AVAILABLE_ANSWER -> {
+                executeInputAvailableAnswerState(update, state);
             }
         }
     }
@@ -102,24 +115,7 @@ public class PollCommand extends Command {
         return message;
     }
 
-    private void executeEmptyState(Update update, String calledPattern) {
-        Message message = update.getMessage();
-        State state = StateConverter.toState(message.getFrom().getId(),
-                message.getChatId(),
-                calledPattern,
-                PollState.INPUT_TITLE.name());
-
-        stateService.createState(state);
-
-        SendMessage messageToSend = SendMessage
-                .builder()
-                .chatId(update.getMessage().getChatId())
-                .text(INPUT_POLL_TITLE_MESSAGE)
-                .build();
-        bot.execute(messageToSend);
-    }
-
-    private void executeInputTitleState(Update update, String calledPattern) {
+    private void executeInputTitleState(Update update, State state) {
         //TODO сохранение введенного заголовка в Redis
         if(!update.hasMessage()) {
             return;
@@ -128,11 +124,11 @@ public class PollCommand extends Command {
         Message message = update.getMessage();
 
         Poll poll = PollConverter.toPollWithoutAvailableAnswers(update.getMessage());
-        pollService.savePoll(poll);
+        pollService.savePoll(poll, null);
 
-        State actualState = StateConverter.toState(message.getFrom().getId(),
-                message.getChatId(),
-                calledPattern,
+        State actualState = StateConverter.toState(state.getUserId(),
+                state.getChatId(),
+                state.getCommand(),
                 PollState.CHOOSING_ACTION.name());
 
         stateService.updateState(actualState);
@@ -148,21 +144,21 @@ public class PollCommand extends Command {
         bot.execute(menuInfo);
     }
 
-    private void executeChoosingActionState(Update update, String calledPattern) {
+    private void executeChoosingActionState(Update update, State state) {
         if(!update.hasCallbackQuery()) {
             return;
         }
 
         CallbackQuery callbackQuery = update.getCallbackQuery();
-        Long userId = callbackQuery.getFrom().getId();
-        Long chatId = callbackQuery.getMessage().getChatId();
+        Long userId = state.getUserId();
+        Long chatId = state.getChatId();
 
         switch (callbackQuery.getData()) {
             case SET_AVAILABLE_ANSWER_BUTTON_CALLBACK_DATA -> {
-                State state = StateConverter.toState(userId, chatId, calledPattern,
+                State currentState = StateConverter.toState(userId, chatId, state.getCommand(),
                         PollState.INPUT_AVAILABLE_ANSWER.name());
 
-                stateService.updateState(state);
+                stateService.updateState(currentState);
 
                 SendMessage messageToSend = SendMessage
                         .builder()
@@ -184,7 +180,7 @@ public class PollCommand extends Command {
         }
     }
 
-    public void executeInputAvailableAnswerState(Update update, String calledPattern) {
+    public void executeInputAvailableAnswerState(Update update, State state) {
         if(!update.hasMessage()) {
             return;
         }
@@ -193,9 +189,9 @@ public class PollCommand extends Command {
 
         Message message = update.getMessage();
 
-        State state = StateConverter.toState(message.getFrom().getId(), message.getChatId(), calledPattern,
+        State currentState = StateConverter.toState(message.getFrom().getId(), message.getChatId(), state.getCommand(),
                 PollState.CHOOSING_ACTION.name());
-        stateService.updateState(state);
+        stateService.updateState(currentState);
 
         String availableAnswer = message.getText();
         SendMessage availableAnswerSavedMessage = SendMessage.builder()
@@ -206,12 +202,6 @@ public class PollCommand extends Command {
 
         SendMessage choosingMenuMessage = constructChoosingStateSendMessage(update);
         bot.execute(choosingMenuMessage);
-    }
-
-    private enum PollState {
-        INPUT_TITLE,
-        CHOOSING_ACTION,
-        INPUT_AVAILABLE_ANSWER
     }
 
 }

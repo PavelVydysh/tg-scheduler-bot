@@ -4,7 +4,6 @@ import lombok.Getter;
 import lombok.Setter;
 
 import java.time.OffsetDateTime;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
@@ -12,16 +11,16 @@ import java.util.UUID;
 @Setter
 public class Poll {
 
-    private UUID id;
-
-    private Long tgChatId;
+    private UUID pollId;
 
     private String title;
 
-    private Integer version;
+    private String tgChatId;
 
     private OffsetDateTime creationDate;
 
-    private List<AvailableAnswer> availableAnswers = new ArrayList<>();
+    private Integer version;
+
+    private List<AvailableAnswer> availableAnswers;
 
 }

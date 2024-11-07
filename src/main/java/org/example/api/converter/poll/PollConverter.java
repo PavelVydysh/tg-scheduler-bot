@@ -9,7 +9,7 @@ public class PollConverter {
 
     public static Poll toPollWithoutAvailableAnswers(Message message) {
         Poll poll = new Poll();
-        poll.setTgChatId(message.getChatId());
+        poll.setTgChatId(message.getChatId().toString());
         poll.setTitle(message.getText());
         poll.setVersion(DEFAULT_VERSION);
 

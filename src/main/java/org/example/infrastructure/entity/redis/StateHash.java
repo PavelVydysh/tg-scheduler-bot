@@ -26,6 +26,8 @@ public class StateHash {
 
     public StateHash(Long userId, Long chatId, String command, String stateValue) {
         this.id = userId + IDENTIFIER_SEPARATOR + chatId;
+        this.userId = userId;
+        this.chatId = chatId;
         this.command = command;
         this.stateValue = stateValue;
     }

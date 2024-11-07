@@ -1,6 +1,7 @@
 package org.example.infrastructure.configuration;
 
 import org.example.api.command.Command;
+import org.example.api.command.CommandWithState;
 import org.example.api.command.InfoCommand;
 import org.example.api.command.PollCommand;
 import org.example.api.command.StatusCommand;
@@ -19,6 +20,13 @@ public class CommandConfiguration {
         return Map.of(
                 "info", infoCommand,
                 "status", statusCommand,
+                "poll", pollCommand
+        );
+    }
+
+    @Bean
+    public Map<String, CommandWithState> commandsWithState(PollCommand pollCommand) {
+        return Map.of(
                 "poll", pollCommand
         );
     }

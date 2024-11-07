@@ -15,7 +15,7 @@ public class InfoCommand extends Command{
     }
 
     @Override
-    void handle(Update update, String calledPattern, String currentState){
+    public void handle(Update update, String calledPattern){
         SendMessage messageToSend = SendMessage
                 .builder()
                 .chatId(update.getMessage().getChatId())
