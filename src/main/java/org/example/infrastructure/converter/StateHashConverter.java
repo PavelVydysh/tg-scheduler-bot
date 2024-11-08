@@ -1,7 +1,7 @@
 package org.example.infrastructure.converter;
 
 import org.example.domain.model.State;
-import org.example.infrastructure.entity.redis.StateHash;
+import org.example.infrastructure.entity.StateHash;
 import org.springframework.util.ObjectUtils;
 
 public class StateHashConverter {

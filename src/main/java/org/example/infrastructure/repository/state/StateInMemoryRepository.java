@@ -3,7 +3,7 @@ package org.example.infrastructure.repository.state;
 import org.example.domain.model.State;
 import org.example.domain.repository.StateRepository;
 import org.example.infrastructure.converter.StateHashConverter;
-import org.example.infrastructure.entity.redis.StateHash;
+import org.example.infrastructure.entity.StateHash;
 import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Repository;
 

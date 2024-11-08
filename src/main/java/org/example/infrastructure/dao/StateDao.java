@@ -1,6 +1,6 @@
-package org.example.infrastructure.dao.redis;
+package org.example.infrastructure.dao;
 
-import org.example.infrastructure.entity.redis.StateHash;
+import org.example.infrastructure.entity.StateHash;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 

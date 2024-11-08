@@ -2,7 +2,7 @@ package org.example.domain.repository;
 
 import org.example.domain.model.poll.Poll;
 
-import java.util.UUID;
+import java.util.Optional;
 
 public interface PollRepository {
 
@@ -10,8 +10,10 @@ public interface PollRepository {
 
     void update(Poll poll);
 
-    Poll findById(UUID id);
+    Optional<Poll> findById(Long tgUserId, Long tgChatId);
 
-    Poll findByTgId(Long id);
+    Optional<Poll> findByTgId(Long id);
+
+    void removePollById(String pollId);
 
 }

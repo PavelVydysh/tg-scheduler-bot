@@ -9,8 +9,6 @@ import java.util.UUID;
 @Setter
 public class AvailableAnswer {
 
-    private UUID availableAnswerId;
-
     private String title;
 
     private Integer position;

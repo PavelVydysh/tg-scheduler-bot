@@ -124,7 +124,7 @@ public class PollCommand extends CommandWithState {
         Message message = update.getMessage();
 
         Poll poll = PollConverter.toPollWithoutAvailableAnswers(update.getMessage());
-        pollService.savePoll(poll, null);
+        pollService.createPoll(poll);
 
         State actualState = StateConverter.toState(state.getUserId(),
                 state.getChatId(),
