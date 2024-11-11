@@ -38,7 +38,7 @@ public class AvailableAnswerHashConverter {
         }
 
         AvailableAnswer availableAnswer = new AvailableAnswer();
-        availableAnswer.setTitle(availableAnswer.getTitle());
+        availableAnswer.setTitle(availableAnswerHash.getTitle());
         availableAnswer.setPosition(availableAnswerHash.getPosition());
 
         return availableAnswer;

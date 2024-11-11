@@ -20,13 +20,8 @@ public class PollInMemoryRepository implements PollRepository {
     @Override
     public void save(Poll poll) {
         PollHash pollHash = PollHashConverter.toPollHash(poll);
-        removePollById(pollHash.getPollId());
+        removePollById(poll.getTgUserId(), poll.getTgChatId());
         pollHashes.add(pollHash);
-    }
-
-    @Override
-    public void update(Poll poll) {
-
     }
 
     @Override
@@ -38,13 +33,9 @@ public class PollInMemoryRepository implements PollRepository {
     }
 
     @Override
-    public Optional<Poll> findByTgId(Long id) {
-        return null;
-    }
-
-    @Override
-    public void removePollById(String pollId) {
-        pollHashes.removeIf(ph -> ph.getPollId().equals(pollId));
+    public void removePollById(Long tgUserId, Long tgChatId) {
+        PollHash currentPollHash = PollHashConverter.toPollHash(tgUserId, tgChatId);
+        pollHashes.removeIf(ph -> ph.getPollId().equals(currentPollHash.getPollId()));
     }
 
 }

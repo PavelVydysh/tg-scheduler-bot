@@ -12,12 +12,12 @@ public class PollService {
 
     private final PollRepository pollRepository;
 
-    public void createPoll(Poll poll) {
+    public void savePoll(Poll poll) {
         pollRepository.save(poll);
     }
 
-    public void updatePoll(Poll poll, State state) {
-
+    public Poll findPoll(Long tgUserId, Long tgChatId) {
+        return pollRepository.findById(tgUserId, tgChatId).orElseThrow(RuntimeException::new);
     }
 
 }

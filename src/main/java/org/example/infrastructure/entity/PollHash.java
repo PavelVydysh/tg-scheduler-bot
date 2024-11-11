@@ -1,12 +1,9 @@
 package org.example.infrastructure.entity;
 
-import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import lombok.ToString;
 import org.springframework.data.redis.core.RedisHash;
-import org.springframework.util.CollectionUtils;
 import org.springframework.util.ObjectUtils;
 
 import java.util.ArrayList;
@@ -29,22 +26,29 @@ public class PollHash {
 
     private Long tgUserId;
 
+    private Boolean isAnonymous;
+
+    private Boolean isHeaderDateTime;
+
     private List<AvailableAnswerHash> availableAnswerHashes;
 
-    public PollHash(Long tgUserId, Long tgChatId, String title, List<AvailableAnswerHash> availableAnswerHashes) {
+    public PollHash(Long tgUserId, Long tgChatId, String title, Boolean isAnonymous, Boolean isHeaderDateTime,
+                    List<AvailableAnswerHash> availableAnswerHashes) {
         this.setPollId(tgUserId + IDENTIFIER_SEPARATOR + tgChatId);
         this.setTitle(title);
         this.setTgUserId(tgUserId);
         this.setTgChatId(tgChatId);
+        this.setIsAnonymous(isAnonymous);
+        this.setIsHeaderDateTime(isHeaderDateTime);
         this.availableAnswerHashes = availableAnswerHashes;
     }
 
     public PollHash(Long tgUserId, Long tgChatId) {
-        this(tgUserId, tgChatId, null, null);
+        this(tgUserId, tgChatId, null, true, false, null);
     }
 
     public List<AvailableAnswerHash> getAvailableAnswerHashes() {
-        if(ObjectUtils.isEmpty(availableAnswerHashes)) {
+        if (ObjectUtils.isEmpty(availableAnswerHashes)) {
             availableAnswerHashes = new ArrayList<>();
         }
 

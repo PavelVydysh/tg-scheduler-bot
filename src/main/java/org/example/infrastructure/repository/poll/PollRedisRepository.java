@@ -9,15 +9,11 @@ import java.util.Optional;
 import java.util.UUID;
 
 @Profile("redis")
-@Repository("shortTermRepository")
+@Repository
 public class PollRedisRepository implements PollRepository {
+
     @Override
     public void save(Poll poll) {
-
-    }
-
-    @Override
-    public void update(Poll poll) {
 
     }
 
@@ -27,12 +23,7 @@ public class PollRedisRepository implements PollRepository {
     }
 
     @Override
-    public Optional<Poll> findByTgId(Long id) {
-        return null;
-    }
-
-    @Override
-    public void removePollById(String pollId) {
+    public void removePollById(Long tgUserId, Long tgChatId) {
 
     }
 

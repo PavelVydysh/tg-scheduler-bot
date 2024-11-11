@@ -15,6 +15,8 @@ public class PollHashConverter {
                 poll.getTgUserId(),
                 poll.getTgChatId(),
                 poll.getTitle(),
+                poll.getIsAnonymous(),
+                poll.getIsHeaderDateTime(),
                 AvailableAnswerHashConverter.toListAvailableAnswerHash(poll.getAvailableAnswers())
         );
     }
@@ -37,6 +39,8 @@ public class PollHashConverter {
         poll.setTitle(pollHash.getTitle());
         poll.setTgUserId(pollHash.getTgUserId());
         poll.setTgChatId(pollHash.getTgChatId());
+        poll.setIsAnonymous(pollHash.getIsAnonymous());
+        poll.setIsHeaderDateTime(pollHash.getIsHeaderDateTime());
         poll.setAvailableAnswers(
                 AvailableAnswerHashConverter
                         .toListAvailableAnswers(pollHash.getAvailableAnswerHashes())

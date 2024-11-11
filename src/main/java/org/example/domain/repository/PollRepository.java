@@ -8,12 +8,8 @@ public interface PollRepository {
 
     void save(Poll poll);
 
-    void update(Poll poll);
-
     Optional<Poll> findById(Long tgUserId, Long tgChatId);
 
-    Optional<Poll> findByTgId(Long id);
-
-    void removePollById(String pollId);
+    void removePollById(Long tgUserId, Long tgChatId);
 
 }
