@@ -1,7 +1,9 @@
 package org.example.infrastructure.configuration;
 
 import org.example.api.command.Command;
+import org.example.api.command.CommandWithState;
 import org.example.api.command.InfoCommand;
+import org.example.api.command.PollCommand;
 import org.example.api.command.StatusCommand;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -13,10 +15,19 @@ public class CommandConfiguration {
 
     @Bean
     public Map<String, Command> commands(InfoCommand infoCommand,
-                                         StatusCommand statusCommand) {
+                                         StatusCommand statusCommand,
+                                         PollCommand pollCommand) {
         return Map.of(
                 "info", infoCommand,
-                "status", statusCommand
+                "status", statusCommand,
+                "poll", pollCommand
+        );
+    }
+
+    @Bean
+    public Map<String, CommandWithState> commandsWithState(PollCommand pollCommand) {
+        return Map.of(
+                "poll", pollCommand
         );
     }
 
