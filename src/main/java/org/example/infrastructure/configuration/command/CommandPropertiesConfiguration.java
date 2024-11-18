@@ -22,7 +22,7 @@ public class CommandPropertiesConfiguration {
         for (CommandProperties cp : commandsProperties.values()) {
             Command currentCommand = commands.get(cp.getBeanName());
             currentCommand.setPattern(cp.getPattern());
-            currentCommand.setChatTypes(cp.getChatTypes());
+            currentCommand.setAllowedChatTypes(cp.getChatTypes());
             configuredCommands.put(currentCommand.getPattern(), currentCommand);
         }
 

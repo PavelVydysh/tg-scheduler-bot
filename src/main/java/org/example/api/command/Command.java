@@ -4,7 +4,6 @@ import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
 import org.example.api.ScheduleBot;
-import org.example.domain.model.State;
 import org.telegram.telegrambots.meta.api.objects.Update;
 
 import java.util.List;
@@ -18,7 +17,7 @@ public abstract class Command {
 
     protected String pattern;
 
-    protected List<String> chatTypes;
+    protected List<String> allowedChatTypes;
 
     public abstract void handle(Update update, String calledPattern);
 

@@ -3,6 +3,7 @@ package org.example.api.command;
 import lombok.extern.slf4j.Slf4j;
 import org.example.domain.model.State;
 import org.example.domain.service.StateService;
+import org.example.domain.service.UserSessionService;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
 import org.springframework.util.ObjectUtils;
@@ -22,12 +23,12 @@ public class CommandRouter {
 
     private Map<String, Command> commands;
 
-    private StateService stateService;
+    private UserSessionService userSessionService;
 
     public CommandRouter(@Qualifier(value = "commands") Map<String, Command> commands,
-                         StateService stateService) {
+                         UserSessionService userSessionService) {
         this.commands = commands;
-        this.stateService = stateService;
+        this.userSessionService = userSessionService;
     }
 
     public void handle(Update update) {
@@ -54,7 +55,7 @@ public class CommandRouter {
                 String command = StringUtils.delete(commandFromUpdate, commandPrefix);
                 Command handler = commands.get(command);
                 if (!ObjectUtils.isEmpty(handler)) {
-                    System.out.println(handler.getChatTypes());
+                    System.out.println(handler.getAllowedChatTypes());
                     handler.handle(update, command);
                 }
             }
