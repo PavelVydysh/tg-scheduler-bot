@@ -1,5 +1,6 @@
-package org.example.infrastructure.configuration;
+package org.example.infrastructure.configuration.bot;
 
+import org.example.infrastructure.configuration.Environment;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

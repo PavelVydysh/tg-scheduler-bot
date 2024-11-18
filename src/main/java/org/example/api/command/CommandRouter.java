@@ -22,19 +22,16 @@ public class CommandRouter {
 
     private Map<String, Command> commands;
 
-    private Map<String, CommandWithState> commandsWithState;
-
     private StateService stateService;
 
     public CommandRouter(@Qualifier(value = "commands") Map<String, Command> commands,
-                         @Qualifier(value = "commandsWithState") Map<String, CommandWithState> commandsWithState,
                          StateService stateService) {
         this.commands = commands;
-        this.commandsWithState = commandsWithState;
         this.stateService = stateService;
     }
 
     public void handle(Update update) {
+        System.out.println(commands);
         if (update.hasMessage()) {
             Message message = update.getMessage();
             log.info("Новое сообщение: {}", message.getText());
@@ -42,12 +39,12 @@ public class CommandRouter {
             Optional<State> optionalState = stateService.findStateByUserIdAnsChatId(message.getFrom().getId(),
                     message.getChatId());
             if (optionalState.isPresent()) {
-                State currentState = optionalState.get();
-                log.info("Статус {}", currentState);
-                CommandWithState handler = commandsWithState.get(currentState.getCommand());
-                if (!ObjectUtils.isEmpty(handler)) {
-                    handler.handleWithState(update, optionalState.get());
-                }
+//                State currentState = optionalState.get();
+//                log.info("Статус {}", currentState);
+//                Command handler = commands.get(currentState.getCommand());
+//                if (!ObjectUtils.isEmpty(handler)) {
+//                    handler.handle(update);
+//                }
             } else {
                 String commandFromUpdate = message.getText();
                 if (!commandFromUpdate.startsWith(commandPrefix)) {
@@ -57,6 +54,7 @@ public class CommandRouter {
                 String command = StringUtils.delete(commandFromUpdate, commandPrefix);
                 Command handler = commands.get(command);
                 if (!ObjectUtils.isEmpty(handler)) {
+                    System.out.println(handler.getChatTypes());
                     handler.handle(update, command);
                 }
             }
@@ -65,9 +63,9 @@ public class CommandRouter {
             Optional<State> optionalState = stateService.findStateByUserIdAnsChatId(callbackQuery.getFrom().getId(),
                     callbackQuery.getMessage().getChatId());
             if (optionalState.isPresent()) {
-                State currentState = optionalState.get();
-                CommandWithState handler = commandsWithState.get(currentState.getCommand());
-                handler.handleWithState(update, optionalState.get());
+//                State currentState = optionalState.get();
+//                CommandWithState handler = commands.get(currentState.getCommand());
+//                handler.handleWithState(update, optionalState.get());
             }
         }
     }

@@ -16,5 +16,14 @@ telegram-bot:
     token: ${TELEGRAM_BOT_TOKEN:token}
 commands:
   poll:
-    is-anonymous: ${TG_SCHEDULE_BOT_POLL_IS_ANONYMOUS:false}
-    title: ${TG_SCHEDULE_BOT_POLL_TITLE:Кто будет сегодня играть?}
+    beanName: ${POLL_COMMAND_BEAN_NAME:pollCommand}
+    pattern: ${POLL_COMMAND_PATTERN:poll}
+    chatTypes: ${POLL_COMMAND_CHAT_TYPES:private}
+  info:
+    beanName: ${INFO_COMMAND_BEAN_NAME:infoCommand}
+    pattern: ${INFO_COMMAND_PATTERN:info}
+    chatTypes: ${INFO_COMMAND_CHAT_TYPES:private,group,supergroup,channel}
+  status:
+    beanName: ${STATUS_COMMAND_BEAN_NAME:statusCommand}
+    pattern: ${STATUS_COMMAND_PATTERN:status}
+    chatTypes: ${STATUS_COMMAND_CHAT_TYPES:private,group,supergroup,channel}

@@ -1,4 +1,4 @@
-package org.example.infrastructure.configuration;
+package org.example.infrastructure.configuration.bot;
 
 import lombok.Getter;
 import lombok.Setter;
