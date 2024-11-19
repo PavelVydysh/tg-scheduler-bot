@@ -25,7 +25,7 @@ import java.util.List;
 
 @Component
 @Slf4j
-public class PollCommand extends CommandWithState {
+public class PollCommand extends Command {
 
     private final static String INPUT_POLL_TITLE_MESSAGE = "Укажите название опроса:";
     private final static String POLL_TITLE_SAVE_MESSAGE = "Заголовок \"%s\" сохранен";
@@ -61,7 +61,7 @@ public class PollCommand extends CommandWithState {
     }
 
     @Override
-    public void handle(Update update, String calledPattern) {
+    public void execute(Update update) {
         Message message = update.getMessage();
         State state = StateConverter.toState(message.getFrom().getId(),
                 message.getChatId(),
@@ -76,6 +76,11 @@ public class PollCommand extends CommandWithState {
                 .text(INPUT_POLL_TITLE_MESSAGE)
                 .build();
         bot.execute(messageToSend);
+    }
+
+    @Override
+    public Boolean supports(Update update) {
+        return allowedChatTypes.contains(update.getMessage().getChat().getType());
     }
 
     @Override

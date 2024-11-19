@@ -2,7 +2,7 @@ package org.example.api.command;
 
 import lombok.extern.slf4j.Slf4j;
 import org.example.domain.model.State;
-import org.example.domain.service.StateService;
+import org.example.domain.model.UserSession;
 import org.example.domain.service.UserSessionService;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
@@ -35,28 +35,28 @@ public class CommandRouter {
         System.out.println(commands);
         if (update.hasMessage()) {
             Message message = update.getMessage();
+            Long userId = message.getFrom().getId();
             log.info("Новое сообщение: {}", message.getText());
 
-            Optional<State> optionalState = stateService.findStateByUserIdAnsChatId(message.getFrom().getId(),
-                    message.getChatId());
-            if (optionalState.isPresent()) {
-//                State currentState = optionalState.get();
-//                log.info("Статус {}", currentState);
-//                Command handler = commands.get(currentState.getCommand());
-//                if (!ObjectUtils.isEmpty(handler)) {
-//                    handler.handle(update);
-//                }
+            Optional<UserSession> optionalUserSession = userSessionService.findUserSessionByUserId(userId);
+            if (optionalUserSession.isPresent()) {
+                UserSession currentSession = optionalUserSession.get();
+                log.info("Статус {}", currentSession);
+                Command command = commands.get(currentSession.getCommand());
+                if (!ObjectUtils.isEmpty(command) && command.supports(update)) {
+                    command.execute(update);
+                }
             } else {
                 String commandFromUpdate = message.getText();
                 if (!commandFromUpdate.startsWith(commandPrefix)) {
                     return;
                 }
                 log.info("статус null");
-                String command = StringUtils.delete(commandFromUpdate, commandPrefix);
-                Command handler = commands.get(command);
-                if (!ObjectUtils.isEmpty(handler)) {
-                    System.out.println(handler.getAllowedChatTypes());
-                    handler.handle(update, command);
+                String commandPattern = StringUtils.delete(commandFromUpdate, commandPrefix);
+                Command command = commands.get(commandPattern);
+                if (!ObjectUtils.isEmpty(command) && command.supports(update)) {
+                    System.out.println(command.getAllowedChatTypes());
+                    command.execute(update);
                 }
             }
         } else if (update.hasCallbackQuery()) {

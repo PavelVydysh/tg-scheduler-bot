@@ -15,7 +15,7 @@ public class StatusCommand extends Command {
     }
 
     @Override
-    public void handle(Update update, String calledPattern) {
+    public void execute(Update update) {
         SendMessage messageToSend = SendMessage
                 .builder()
                 .chatId(update.getMessage().getChatId())
@@ -23,6 +23,11 @@ public class StatusCommand extends Command {
                 .build();
 
         bot.execute(messageToSend);
+    }
+
+    @Override
+    public Boolean supports(Update update) {
+        return allowedChatTypes.contains(update.getMessage().getChat().getType());
     }
 
 }

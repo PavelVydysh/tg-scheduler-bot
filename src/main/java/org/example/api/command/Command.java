@@ -19,6 +19,8 @@ public abstract class Command {
 
     protected List<String> allowedChatTypes;
 
-    public abstract void handle(Update update, String calledPattern);
+    public abstract void execute(Update update);
+
+    public abstract Boolean supports(Update update);
 
 }
