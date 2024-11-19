@@ -4,6 +4,7 @@ import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
 import org.example.api.ScheduleBot;
+import org.example.domain.model.UserSession;
 import org.telegram.telegrambots.meta.api.objects.Update;
 
 import java.util.List;

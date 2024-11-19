@@ -61,8 +61,8 @@ public class CommandRouter {
             }
         } else if (update.hasCallbackQuery()) {
             CallbackQuery callbackQuery = update.getCallbackQuery();
-            Optional<State> optionalState = stateService.findStateByUserIdAnsChatId(callbackQuery.getFrom().getId(),
-                    callbackQuery.getMessage().getChatId());
+            Long userId = callbackQuery.getFrom().getId();
+            Optional<>
             if (optionalState.isPresent()) {
 //                State currentState = optionalState.get();
 //                CommandWithState handler = commands.get(currentState.getCommand());
