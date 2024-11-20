@@ -15,6 +15,11 @@ import org.telegram.telegrambots.meta.api.objects.message.Message;
 import java.util.Map;
 import java.util.Optional;
 
+/*
+* интерфейс формирования/редактирования опроса - tg web app
+* каждое действие это отдельная команда
+* продумать состояния из которых команда может вызываться
+* */
 @Component
 @Slf4j
 public class CommandRouter {
