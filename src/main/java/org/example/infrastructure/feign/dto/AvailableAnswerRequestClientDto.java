@@ -1,16 +1,13 @@
-package org.example.domain.model.poll;
+package org.example.infrastructure.feign.dto;
 
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
 
-import java.util.UUID;
-
 @Getter
 @Setter
-public class AvailableAnswer {
-
-    private UUID availableAnswerId;
+@ToString
+public class AvailableAnswerRequestClientDto {
 
     private String title;
 

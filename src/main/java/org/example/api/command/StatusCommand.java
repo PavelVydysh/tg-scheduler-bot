@@ -1,6 +1,6 @@
 package org.example.api.command;
 
-import org.example.api.ScheduleBot;
+import org.example.api.Bot;
 import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.objects.Update;
@@ -10,7 +10,7 @@ public class StatusCommand extends Command {
 
     private final static String MESSAGE = "Статус";
 
-    public StatusCommand(ScheduleBot bot) {
+    public StatusCommand(Bot bot) {
         super(bot);
     }
 

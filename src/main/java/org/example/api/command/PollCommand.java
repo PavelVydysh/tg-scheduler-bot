@@ -1,25 +1,15 @@
 package org.example.api.command;
 
 import lombok.extern.slf4j.Slf4j;
-import org.example.api.ScheduleBot;
-import org.example.api.converter.StateConverter;
-import org.example.api.converter.poll.AvailableAnswerConverter;
-import org.example.api.converter.poll.PollConverter;
-import org.example.domain.model.State;
-import org.example.domain.model.enums.PollState;
-import org.example.domain.model.poll.AvailableAnswer;
-import org.example.domain.model.poll.Poll;
+import org.example.api.Bot;
 import org.example.domain.service.PollService;
-import org.example.domain.service.StateService;
 import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
-import org.telegram.telegrambots.meta.api.methods.updatingmessages.EditMessageReplyMarkup;
-import org.telegram.telegrambots.meta.api.objects.CallbackQuery;
 import org.telegram.telegrambots.meta.api.objects.Update;
-import org.telegram.telegrambots.meta.api.objects.message.Message;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.InlineKeyboardMarkup;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.InlineKeyboardButton;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.InlineKeyboardRow;
+import org.telegram.telegrambots.meta.api.objects.webapp.WebAppInfo;
 
 import java.util.List;
 
@@ -48,39 +38,54 @@ public class PollCommand extends Command {
     public static final String IS_DATETIME_BUTTON_CALLBACK = "is_header_datetime";
     public static final String CONFIRM_BUTTON_CALLBACK = "confirm";
 
-    private final StateService stateService;
-
     private final PollService pollService;
 
-    public PollCommand(ScheduleBot bot,
-                       StateService stateService,
+    public PollCommand(Bot bot,
                        PollService pollService) {
         super(bot);
-        this.stateService = stateService;
         this.pollService = pollService;
     }
 
     @Override
     public void execute(Update update) {
-        Message message = update.getMessage();
-        State state = StateConverter.toState(message.getFrom().getId(),
-                message.getChatId(),
-                calledPattern,
-                PollState.INPUT_TITLE.name());
-
-        stateService.createState(state);
 
         SendMessage messageToSend = SendMessage
                 .builder()
                 .chatId(update.getMessage().getChatId())
-                .text(INPUT_POLL_TITLE_MESSAGE)
+                .text("Что вы хотите сделать?")
+                .replyMarkup(buildKeyboardMarkup())
                 .build();
+
         bot.execute(messageToSend);
     }
 
     @Override
     public Boolean supports(Update update) {
         return allowedChatTypes.contains(update.getMessage().getChat().getType());
+    }
+
+    private InlineKeyboardMarkup buildKeyboardMarkup() {
+
+        InlineKeyboardButton showPollsButton = InlineKeyboardButton.builder()
+                .text("Просмотреть список опросов")
+                .callbackData("show_poll_list")
+                .build();
+
+        InlineKeyboardButton createPollButton = InlineKeyboardButton.builder()
+                .text("Создать опрос")
+                .webApp(WebAppInfo.builder()
+                        .url("https://127.0.0.1:5500/?tgWebAppDebug=true")
+                        .build())
+                .build();
+
+        InlineKeyboardRow firstRow = new InlineKeyboardRow(List.of(showPollsButton));
+        InlineKeyboardRow secondRow = new InlineKeyboardRow(List.of(createPollButton));
+
+        return new InlineKeyboardMarkup(
+                List.of(firstRow,
+                        secondRow)
+        );
+
     }
 
 }

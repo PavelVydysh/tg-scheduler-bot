@@ -3,8 +3,7 @@ package org.example.api.command;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
-import org.example.api.ScheduleBot;
-import org.example.domain.model.UserSession;
+import org.example.api.Bot;
 import org.telegram.telegrambots.meta.api.objects.Update;
 
 import java.util.List;
@@ -14,7 +13,7 @@ import java.util.List;
 @Setter
 public abstract class Command {
 
-    protected final ScheduleBot bot;
+    protected final Bot bot;
 
     protected String pattern;
 

@@ -1,14 +1,12 @@
 package org.example.api.command;
 
 import lombok.extern.slf4j.Slf4j;
-import org.example.domain.model.State;
 import org.example.domain.model.UserSession;
 import org.example.domain.service.UserSessionService;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
 import org.springframework.util.ObjectUtils;
 import org.springframework.util.StringUtils;
-import org.telegram.telegrambots.meta.api.objects.CallbackQuery;
 import org.telegram.telegrambots.meta.api.objects.Update;
 import org.telegram.telegrambots.meta.api.objects.message.Message;
 
@@ -65,14 +63,15 @@ public class CommandRouter {
                 }
             }
         } else if (update.hasCallbackQuery()) {
-            CallbackQuery callbackQuery = update.getCallbackQuery();
-            Long userId = callbackQuery.getFrom().getId();
-            Optional<>
-            if (optionalState.isPresent()) {
+            System.out.println("asdsadasd");
+//            CallbackQuery callbackQuery = update.getCallbackQuery();
+//            Long userId = callbackQuery.getFrom().getId();
+//            Optional<>
+//            if (optionalState.isPresent()) {
 //                State currentState = optionalState.get();
 //                CommandWithState handler = commands.get(currentState.getCommand());
 //                handler.handleWithState(update, optionalState.get());
-            }
+//            }
         }
     }
 

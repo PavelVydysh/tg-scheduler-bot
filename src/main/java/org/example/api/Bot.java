@@ -20,7 +20,7 @@ import java.io.Serializable;
 
 @Slf4j
 @Component
-public class ScheduleBot implements SpringLongPollingBot, LongPollingSingleThreadUpdateConsumer {
+public class Bot implements SpringLongPollingBot, LongPollingSingleThreadUpdateConsumer {
 
     private final BotProperties botProperties;
 
@@ -29,7 +29,7 @@ public class ScheduleBot implements SpringLongPollingBot, LongPollingSingleThrea
     private final CommandRouter commandRouter;
 
     @Autowired
-    public ScheduleBot(BotProperties botProperties, @Lazy CommandRouter commandRouter) {
+    public Bot(BotProperties botProperties, @Lazy CommandRouter commandRouter) {
         this.botProperties = botProperties;
         this.telegramClient = new OkHttpTelegramClient(getBotToken());
         this.commandRouter = commandRouter;
